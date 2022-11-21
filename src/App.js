@@ -7,11 +7,10 @@ import Overview from "./components/Overview";
 class App extends Component {
   constructor() {
     super();
-
     this.state = {
       task: {
         text: '',
-        id: uniqid()
+        id: uniqid(),
       },
       tasks: [],
     };
@@ -29,19 +28,29 @@ class App extends Component {
   onSubmitTask = (e) => {
     e.preventDefault();
     this.setState({
+      num: "2",
       tasks: this.state.tasks.concat(this.state.task),
       task: {
         text: '', 
-        id: uniqid()
+        id: uniqid(),
       },
     });
   };
 
+  deleteTask = (index) => {
+    this.setState({
+      tasks: this.state.tasks.filter((task)=>{
+        return task !== this.state.tasks[index]
+      })
+    });
+  };
+
   render() {
-    const { task, tasks } = this.state;
+    const { task, tasks,} = this.state;
 
     return (
       <div>
+        <span>{task.counter}</span>
         <form onSubmit={this.onSubmitTask}>
           <label htmlFor="taskInput">Enter task</label>
           <input
@@ -54,7 +63,7 @@ class App extends Component {
             Add Task
           </button>
         </form>
-        <Overview tasks={tasks} />
+        <Overview tasks={tasks} deleteTask = {this.deleteTask}/>
       </div>
     );
   }

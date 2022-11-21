@@ -3,14 +3,20 @@
 import React from "react";
 
 const Overview = (props) => {
-  const { tasks } = props;
+  const { tasks , deleteTask } = props;
 
   return (
-    <ul>
+    <div>
       {tasks.map((task) => {
-        return <li key={task.id}>{task.text}</li>;
+        return (
+        <div key={task.id}>{tasks.indexOf(task) + 1} {task.text} 
+          <button type="button" onClick={() => deleteTask(tasks.indexOf(task))}>
+            Delete
+          </button>
+        </div>
+        );
       })}
-    </ul>
+    </div>
   );
 };
 
