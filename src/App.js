@@ -11,8 +11,12 @@ class App extends Component {
       task: {
         text: '',
         id: uniqid(),
+        editable: false,
       },
       tasks: [],
+      editText: '',
+
+      
     };
   }
 
@@ -28,7 +32,6 @@ class App extends Component {
   onSubmitTask = (e) => {
     e.preventDefault();
     this.setState({
-      num: "2",
       tasks: this.state.tasks.concat(this.state.task),
       task: {
         text: '', 
@@ -37,20 +40,70 @@ class App extends Component {
     });
   };
 
-  deleteTask = (index) => {
+  deleteTask = (id) => {
     this.setState({
-      tasks: this.state.tasks.filter((task)=>{
-        return task !== this.state.tasks[index]
+      tasks: this.state.tasks.filter(task=>{
+        return task.id !== id
       })
     });
   };
+
+  // editButton = (id,vars) => {
+  //   this.setState({
+  //     tasks: this.state.tasks.filter(task=>{
+  //       if(task.id === id ){
+  //         task.editable = true;
+  //         tasks: this.state.tasks.concat(this.state.task)
+  //       }
+  //       return task 
+  //     })
+      
+  //   });
+  // };
+
+  editButton = (id) => {
+    this.state.tasks.filter(task=>{
+      
+      if(task.id === id ){
+        task.editable = true;
+        // this.setState({
+        //   editText: task.state,
+        // });
+        this.setState((editText) => ({ 
+          editText: task.text,
+       }))
+      }
+      console.log(this.editText)
+      console.log(task.text )
+
+        return task 
+      })
+  };
+
+  saveEditInput = (newtext) => {
+
+        this.setState({
+          editText: this.editText + newtext,
+        });
+  
+  };
+
+  saveEdit  = (e) => {
+    e.preventDefault();
+
+    // this.setState({
+      
+    //     task.text:  e.target.value,
+    // });
+    console.log(e)
+  };
+
 
   render() {
     const { task, tasks,} = this.state;
 
     return (
       <div>
-        <span>{task.counter}</span>
         <form onSubmit={this.onSubmitTask}>
           <label htmlFor="taskInput">Enter task</label>
           <input
@@ -63,7 +116,7 @@ class App extends Component {
             Add Task
           </button>
         </form>
-        <Overview tasks={tasks} deleteTask = {this.deleteTask}/>
+        <Overview tasks={tasks} editText={this.editText} deleteTask = {this.deleteTask} editButton = {this.editButton} saveEditInput={this.saveEditInput} saveEdit = {this.saveEdit}/>
       </div>
     );
   }
